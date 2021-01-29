@@ -18,6 +18,8 @@ import { ToastrModule} from 'ngx-toastr';
 import { SharedModule } from './_modules/shared.module';
 import { TestErrorsComponent } from './Errors/test-errors/test-errors.component';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
+import { NotFoundComponent } from './Errors/not-found/not-found.component';
+import { ServerErrorComponent } from './Errors/server-error/server-error.component';
 
 
 @NgModule({
@@ -30,7 +32,9 @@ import { ErrorInterceptor } from './_interceptors/error.interceptor';
     MemberDetailComponent,
     ListsComponent,
     MessagesComponent,
-    TestErrorsComponent
+    TestErrorsComponent,
+    NotFoundComponent,
+    ServerErrorComponent
   ],
   imports: [
     BrowserModule,
