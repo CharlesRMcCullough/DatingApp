@@ -37,14 +37,15 @@ namespace API.Controllers
             return Ok(users);
         }
 
-        [HttpGet("{username}")]
+        [HttpGet("{username}", Name="GetUser")]
         public async Task<ActionResult<MemberDto>> GetUser(string userName)
         {
+            
             return await _userRepository.GetMemberAsync(userName);
 
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
         {
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
@@ -59,10 +60,11 @@ namespace API.Controllers
 
         }
 
-        [HttpPut("add-photo")]
+        [HttpPost("add-photo")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
         {
-            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+           var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+
 
             var result = await _photoService.AddPhotoAsync(file);
 
@@ -74,13 +76,18 @@ namespace API.Controllers
                 PublicId = result.PublicId
             };
 
-            if (user.Photos.Count == 0)
+            if (user.Photos == null)
             {
                 photo.IsMain = true;
             }
 
+            user.Photos.Add(photo);
+
             if (await _userRepository.SaveAllAsync())
-                return _mapper.Map<PhotoDto>(photo);
+            {
+                return CreatedAtRoute("GetUser", new {username = user.UserName}, _mapper.Map<PhotoDto>(photo));  
+            }
+                
 
             return BadRequest("Photo not added!");
 

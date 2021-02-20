@@ -15,7 +15,7 @@ namespace API.Services
         {
             var acc = new Account
             (
-                config.Value.Cloudname,
+                config.Value.CloudName,
                 config.Value.ApiKey,
                 config.Value.ApiSecret
             );
